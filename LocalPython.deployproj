@@ -11,15 +11,6 @@
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
     <ItemGroup Condition="'$(Platform)'=='Win64'">
-        <DeployFile Include="Win64\Debug\LocalPython.rsm" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LocalPython\</RemoteDir>
-            <RemoteName>LocalPython.rsm</RemoteName>
-            <DeployClass>DebugSymbols</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="Win64\Debug\LocalPython.exe" Condition="'$(Config)'=='Debug'">
             <RemoteDir>LocalPython\</RemoteDir>
             <RemoteName>LocalPython.exe</RemoteName>
@@ -44,6 +35,15 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
+        <DeployFile Include="OSX64\Debug\LocalPython.entitlements" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>LocalPython.app\..\</RemoteDir>
+            <RemoteName>LocalPython.entitlements</RemoteName>
+            <DeployClass>ProjectOSXEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
             <RemoteDir>LocalPython.app\Contents\Resources\</RemoteDir>
             <RemoteName>LocalPython.icns</RemoteName>
@@ -53,10 +53,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="OSX64\Debug\LocalPython.entitlements" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LocalPython.app\..\</RemoteDir>
-            <RemoteName>LocalPython.entitlements</RemoteName>
-            <DeployClass>ProjectOSXEntitlements</DeployClass>
+        <DeployFile Include="OSX64\Debug\LocalPython.dSYM" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>LocalPython.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
+            <RemoteName>LocalPython</RemoteName>
+            <DeployClass>ProjectOSXDebug</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -76,15 +76,6 @@
             <RemoteDir>LocalPython.app\Contents\</RemoteDir>
             <RemoteName>Info.plist</RemoteName>
             <DeployClass>ProjectOSXInfoPList</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="OSX64\Debug\LocalPython.dSYM" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LocalPython.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
-            <RemoteName>LocalPython</RemoteName>
-            <DeployClass>ProjectOSXDebug</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
