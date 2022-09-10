@@ -44,7 +44,25 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="OSX64\Debug\LocalPython.dSYM" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>LocalPython.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
+            <RemoteName>LocalPython</RemoteName>
+            <DeployClass>ProjectOSXDebug</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="macpython.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>LocalPython.app\Contents\Resources\</RemoteDir>
+            <RemoteName>macpython.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Release'">
             <RemoteDir>LocalPython.app\Contents\Resources\</RemoteDir>
             <RemoteName>LocalPython.icns</RemoteName>
             <DeployClass>ProjectOSXResource</DeployClass>
@@ -53,7 +71,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="OSX64\Debug\LocalPython.dSYM" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="OSX64\Release\LocalPython.dSYM" Condition="'$(Config)'=='Release'">
             <RemoteDir>LocalPython.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
             <RemoteName>LocalPython</RemoteName>
             <DeployClass>ProjectOSXDebug</DeployClass>
@@ -72,11 +90,57 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="OSX64\Release\LocalPython" Condition="'$(Config)'=='Release'">
+            <RemoteDir>LocalPython.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>LocalPython</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>LocalPython.app\Contents\Resources\</RemoteDir>
+            <RemoteName>LocalPython.icns</RemoteName>
+            <DeployClass>ProjectOSXResource</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSX64\Release\LocalPython.info.plist" Condition="'$(Config)'=='Release'">
+            <RemoteDir>LocalPython.app\Contents\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectOSXInfoPList</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="OSX64\Debug\LocalPython.info.plist" Condition="'$(Config)'=='Debug'">
             <RemoteDir>LocalPython.app\Contents\</RemoteDir>
             <RemoteName>Info.plist</RemoteName>
             <DeployClass>ProjectOSXInfoPList</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSX64\Release\LocalPython.entitlements" Condition="'$(Config)'=='Release'">
+            <RemoteDir>LocalPython.app\..\</RemoteDir>
+            <RemoteName>LocalPython.entitlements</RemoteName>
+            <DeployClass>ProjectOSXEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="macpython.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>LocalPython.app\Contents\Resources\</RemoteDir>
+            <RemoteName>macpython.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>

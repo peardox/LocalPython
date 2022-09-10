@@ -10,6 +10,8 @@ uses
   FMX.PythonGUIInputOutput, PyCommon, PyModule, PyPackage, PSUtil, FMX.StdCtrls;
 
 type
+  TInstalledPythonVersions = Array of TPythonVersionProp;
+
   TForm1 = class(TForm)
     PyEng: TPythonEngine;
     PyIO: TPythonGUIInputOutput;
@@ -27,8 +29,8 @@ type
       const APythonVersion: string; const AActivated: Boolean);
   private
     { Private declarations }
+    PyVersions: TInstalledPythonVersions;
     PyIsActivated: Boolean;
-    procedure WriteLocalPythonJSON(const outfile: String; const version: String; const pythonpath: String; const libfile: String; const exefile: String);
     procedure Test;
   public
     { Public declarations }
@@ -38,7 +40,6 @@ var
   Form1: TForm1;
 
 const
-  JSONFileName = 'python.json';
   AppName = 'SimplePython';
   PyVersion = '3.9';
 
@@ -81,60 +82,16 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
-var
-  OutFile: String;
-  PyPath: String;
 begin
   Button1.Enabled := False;
   if not PyIsActivated then
     begin
-      OutFile := '';
       // MacOSX with X64 CPU
       {$IF DEFINED(MACOS64)}
-      OutFile := IncludeTrailingPathDelimiter(
-                  IncludeTrailingPathDelimiter(
-                  System.IOUtils.TPath.GetLibraryPath) +
-                  AppName) +
-                  JSONFileName;
-      PyPath := '/Library/Frameworks/Python.framework/Versions/' + PyVersion;
-      WriteLocalPythonJSON(OutFile, PyVersion, PyPath,
-        TPath.Combine(PyPath, 'lib/libpython' + PyVersion + '.dylib'),
-        TPath.Combine(PyPath, 'bin/python' + PyVersion));
-      {$ELSEIF DEFINED(LINUX64)}
-      OutFile := IncludeTrailingPathDelimiter(
-                  IncludeTrailingPathDelimiter(
-                  System.IOUtils.TPath.GetHomePath) +
-                  AppName) +
-                  JSONFileName;
-      // This needs fixing
-      PyPath := '/Library/Frameworks/Python.framework/Versions/' + PyVersion;
-      WriteLocalPythonJSON(OutFile, PyVersion, PyPath,
-        TPath.Combine(PyPath, 'lib/libpython' + PyVersion '.so'),
-        TPath.Combine(PyPath, 'bin/python3.9'));
-      // Windows X64 CPU
-      {$ELSEIF DEFINED(WIN64)}
-      OutFile := IncludeTrailingPathDelimiter(
-                  IncludeTrailingPathDelimiter(
-                  System.IOUtils.TPath.GetHomePath) +
-                  AppName) +
-                  JSONFileName;
-      PyPath := ExpandFileName(TPath.Combine(TPath.GetHomePath, '..\Local\Programs\Python\Python39'));
-      WriteLocalPythonJSON(OutFile, PyVersion, PyPath.Replace('\','\\'),
-        TPath.Combine(PyPath, 'python39.dll').Replace('\','\\'),
-        TPath.Combine(PyPath, 'python.exe').Replace('\','\\'));
-      // Windows 32 bit
-      {$ELSEIF DEFINED(WIN32)}
-      raise Exception.Create('Didn''t bother with this one - use Win64 or write your own Python location');
-      // Linux X64 CPU
+      PyLocal.FilePath := '../Resources/macpython.json';
       {$ELSE}
-      raise Exception.Create('Need to set OutFile for this build');
+      raise Exception.Create('Need to create JSON for this build');
       {$ENDIF}
-      if OutFile = '' then
-        begin
-          ShowMessage('Can''t create JSON file');
-          exit;
-        end;
-      PyLocal.FilePath := OutFile;
       PyLocal.PythonVersion := PyVersion;
       PyLocal.Setup(PyLocal.PythonVersion);
       if not PyIsActivated then
@@ -185,37 +142,6 @@ begin
         threads + ' threads' +
         ' and ' + memory.total + ' bytes or memory');
     end;
-end;
-
-procedure TForm1.WriteLocalPythonJSON(const outfile: String; const version: String; const pythonpath: String; const libfile: String; const exefile: String);
-var
-  SW: TStreamWriter;
-  JSONText: String;
-begin
-  SW := Nil;
-  JSONText := '[{' +
-    '"' + version + '": {' +
-    '"home":"' + pythonpath + '",' +
-    '"shared_library":"' + libfile +'",' +
-    '"executable":"'+ exefile + '"' +
-    '}}]';
-  try
-    try
-      if not DirectoryExists(ExtractFilePath(outfile)) then
-        ForceDirectories(ExtractFilePath(outfile));
-      SW := TStreamWriter.Create(outfile);
-      SW.Write(JSONText);
-    except
-      on E: Exception do
-        begin
-          Memo1.Lines.Add('Unhandled Exception');
-          Memo1.Lines.Add('Class : ' + E.ClassName);
-          Memo1.Lines.Add('Error : ' + E.Message);
-        end;
-    end;
-  finally
-    SW.Free;
-  end;
 end;
 
 end.
